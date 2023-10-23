@@ -1,7 +1,28 @@
 import React, { Component } from 'react'
 import {NavLink} from 'react-router-dom';
+import Global from './../Global';
+import axios from 'axios';
 
 export default class MenuHospitales extends Component {
+    state = {
+        hospitales: [], 
+        status: false
+    }
+
+    loadHospitales = () => {
+        var request = "webresources/hospitales";
+        var url = Global.apiHospitales + request;
+        axios.get(url).then(response => {
+            this.setState({
+                hospitales: response.data, 
+                status: true
+            })
+        })
+    }
+
+    componentDidMount = () => {
+        this.loadHospitales();
+    }
   render() {
     return (
         <div>
@@ -22,10 +43,22 @@ export default class MenuHospitales extends Component {
                         Hospitales
                     </a>
                     <ul className="dropdown-menu">
-                        <li><a className="dropdown-item" href="#">Action</a></li>
-                        <li><a className="dropdown-item" href="#">Another action</a></li>
-                        <li><hr className="dropdown-divider"/></li>
-                        <li><a className="dropdown-item" href="#">Something else here</a></li>
+                        {
+                            this.state.status == true &&
+                            (
+                                this.state.hospitales.map((hospital, index) => {
+                                    return (
+                                        <li key={index}>
+                                            <NavLink 
+                                            className="dropdown-item" 
+                                            to={"/doctores/" + hospital.idhospital}>
+                                                {hospital.nombre}
+                                            </NavLink>
+                                        </li>
+                                    )
+                                })
+                            )
+                        }
                     </ul>
                     </li>
                 </ul>

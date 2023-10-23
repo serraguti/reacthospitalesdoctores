@@ -6,13 +6,17 @@ import Doctores from './Doctores';
 
 export default class Router extends Component {
   render() {
+    function DoctoresElement() {
+        var { idhospital } = useParams();
+        return <Doctores idhospital={idhospital}/>
+    }
     return (
       <BrowserRouter>
         <MenuHospitales/>
         <hr/>
         <Routes>
             <Route path='/' element={<Home/>}/>
-            <Route path="/doctores" element={<Doctores/>}/>
+            <Route path="/doctores/:idhospital" element={<DoctoresElement/>}/>
         </Routes>
       </BrowserRouter>
     )
